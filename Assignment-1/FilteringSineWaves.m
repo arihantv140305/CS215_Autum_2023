@@ -12,30 +12,17 @@ function FilteringSineWaves(f)
     
     % Filtering using Median (Moving Median Filtering)
     y_med = z;
-    for i = 1:numel(z)
-        neighborhood_start = max(1, i - 8);        % For left-end start = 1
-        neighborhood_end = min(numel(z), i + 8);   % For right-end end = numel(z)
-        neighborhood = z(neighborhood_start:neighborhood_end);
-        y_med(i) = median(neighborhood);
-    end
-    
-    % Filtering using Arithmetic Mean (Moving Average Filtering)
     y_mean = z;
-    for i = 1:numel(z)
-        neighborhood_start = max(1, i - 8);        % For left-end start = 1
-        neighborhood_end = min(numel(z), i + 8);   % For right-end end = numel(z)
-        neighborhood = z(neighborhood_start:neighborhood_end);
-        y_mean(i) =  mean(neighborhood);
-    end
-    
-    % Filtering using the first quartile (Moving Quartile Filtering)
     y_quart = z;
     for i = 1:numel(z)
         neighborhood_start = max(1, i - 8);        % For left-end start = 1
         neighborhood_end = min(numel(z), i + 8);   % For right-end end = numel(z)
         neighborhood = z(neighborhood_start:neighborhood_end);
+        y_med(i) = median(neighborhood);
+        y_mean(i) =  mean(neighborhood);
         y_quart(i) = quantile(neighborhood,0.25);
     end
+   
     
     % Plotting all the different filtered arrays
     figure;
