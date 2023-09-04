@@ -1,8 +1,8 @@
 clear;
 close all;
 
-im1 = double(imread('T1.jpg'));
-im2 = double(imread('T2.jpg'));
+im1 = double(imread('images/T1.jpg'));
+im2 = double(imread('images/T2.jpg'));
 shift = -10:10;
 
 correlation_values = zeros(1, length(shift));
