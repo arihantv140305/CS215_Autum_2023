@@ -4,7 +4,6 @@ data = dlmread('XYZ.txt');
 x = data(:,1);
 y = data(:,2);
 z = data(:,3);
-
 A = [sum(x.*x), sum(x.*y), sum(x); sum(x.*y), sum(y.*y), sum(y); sum(x), sum(y), 2000];
 C = [sum(x.*z);sum(y.*z);sum(z)];
 X = A\C;

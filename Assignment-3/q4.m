@@ -1,7 +1,7 @@
 clear;
 close all;
 clc;
-
+rng(100)
 n = 1000;
 data = normrnd(0,4,1,n);
 indices = randperm(n, 750);
@@ -46,10 +46,11 @@ end
 % Plot LL versus log(sigma)
 figure;
 log_sigma = log(sigma_values);
-plot(log_sigma,LL_values);
+plot(log_sigma,LL_values, "LineWidth",2);
 xlabel('log(\sigma)');
 ylabel('Log Joint Likelihood (LL)');
 title('Cross-Validation for Bandwidth Parameter \sigma');
+saveas(gcf, "q4-1.png")
 % Display and print the best sigma and corresponding LL value
 fprintf('Best sigma: %f\n', best_sigma);
 fprintf('Best LL value: %f\n', best_LL);
@@ -65,10 +66,14 @@ for i = 1:length(x)
 end
 
 figure;
-plot(x,p_n,'b',x,p,'r');
+plot(x,p_n,'b', "LineWidth",2, 'DisplayName','estimate density');
+hold on;
+plot(x,p,'r', 'LineWidth',2, 'DisplayName','Actual density');
 xlabel('x-values');
 ylabel('PDF');
 title('Kernel Density Estimation vs. True Density');
+legend();
+saveas(gcf, "q4-2.png")
 
 
 % 4(d) part
@@ -84,6 +89,9 @@ for i = 1:length(sigma_values)
         end
         D_values(i) = D_values(i) + (normpdf(V(k),0,4)-p_x)^2;
     end
+    if(sigma == best_sigma)
+        D_best_LL = D_values(i);
+    end
     if(best_D>D_values(i))
         best_D = D_values(i);
         best_sigma_d = sigma;
@@ -92,9 +100,14 @@ end
 
 fprintf('Best sigma: %f\n', best_sigma_d);
 fprintf('Best D: %f\n', best_D);
+fprintf('D at sigma which gave best LL: %f\n', D_best_LL);
 
 figure;
-plot(log_sigma,D_values);
+plot(log_sigma,D_values, 'LineWidth',2);
+xlabel("D_values");
+ylabel("log_sigma");
+title("D-values v/s log sigma")
+saveas(gcf, "q4-3.png");
 
 x = -8:0.1:8;
 p_n = zeros(size(x));
@@ -107,7 +120,11 @@ for i = 1:length(x)
 end
 
 figure;
-plot(x,p_n,'b',x,p,'r');
+plot(x,p_n,'b', LineWidth=2, DisplayName='Estimated Density');
+hold on;
+plot(x,p,'r', 'LineWidth',2, 'DisplayName','Actual density');
 xlabel('x-values');
 ylabel('PDF');
-title('Kernel Density Estimation vs. True Density');
+title('D-value Estimation vs. True Density');
+legend;
+saveas(gcf, "q4-4.png")
